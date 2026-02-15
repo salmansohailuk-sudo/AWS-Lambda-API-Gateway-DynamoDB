@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Register User</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(15px);
+    padding: 40px;
+    border-radius: 20px;
+    width: 400px;
+    color: white;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: #00c6ff;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #0072ff;
+}
+
+.link {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.link a {
+    color: white;
+    text-decoration: none;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>Register User</h2>
+
+<form method="POST" action="/dev/">
+<input name="fname" placeholder="First Name" required>
+<input name="lname" placeholder="Last Name" required>
+<input name="email" placeholder="Email" required>
+<textarea name="message" placeholder="Message" required></textarea>
+<button type="submit">Submit</button>
+</form>
+
+<div class="link">
+<a href="/dev/?action=view">View Records</a>
+</div>
+
+</div>
+
+</body>
+</html>
