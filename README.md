@@ -263,6 +263,5 @@ It highlights backend development, cloud architecture, security implementation, 
 ---
 
 # 👨‍💻 Author
-Salman Sayeed, MSc
-Anil  
-AWS | DevOps | Serverless Architecture Enthusiast
+Salman Sayeed, MSc - salmansohailuk@gmail.com
+AWS | Azure | GCP | DevOps | Serverless Architect
