@@ -17,7 +17,8 @@ It demonstrates:
 
 # 🏗 Architecture Diagram
 
-![Architecture Diagram](https://github.com/aniljadhavmca/AWS-Lambda-API-Gateway-DynamoDB/blob/main/images/AWS%20Lambda%20%2B%20API%20Gateway%20%2B%20DynamoDB-new.png)
+
+<img width="1498" height="510" alt="AWS Lambda + API Gateway + DynamoDB-new" src="https://github.com/user-attachments/assets/2daaaa5c-ef7c-4484-b092-01ef173fbee3" />
 
 ---
 
@@ -152,8 +153,8 @@ Example: Update Record
 
 ## Step 1 – Create DynamoDB Table
 
-- Table Name: `veera`
-- Partition Key: `email` (String)
+- Table Name: `devdb`
+- Partition Key: `id` (String)
 - Sort Key: `1` (Number)
 - Region: us-east-1
 
@@ -262,6 +263,6 @@ It highlights backend development, cloud architecture, security implementation, 
 ---
 
 # 👨‍💻 Author
-
+Salman Sayeed, MSc
 Anil  
 AWS | DevOps | Serverless Architecture Enthusiast
