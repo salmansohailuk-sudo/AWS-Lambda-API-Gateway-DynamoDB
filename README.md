@@ -18,7 +18,7 @@ It demonstrates:
 # 🏗 Architecture Diagram
 
 
-<img width="1498" height="510" alt="AWS Lambda + API Gateway + DynamoDB-new" src="https://github.com/user-attachments/assets/2daaaa5c-ef7c-4484-b092-01ef173fbee3" />
+<img width="1498" height="510" alt="AWS Lambda + API Gateway + DynamoDB-new" src="https://github.com/user-attachments/assets/51ac36aa-44d0-47c6-9691-9d3659ce0ff5" />
 
 ---
 
