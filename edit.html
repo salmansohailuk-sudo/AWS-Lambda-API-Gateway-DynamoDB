@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Edit Record</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    width: 420px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+}
+
+textarea {
+    resize: none;
+    height: 80px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: #667eea;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #5563c1;
+}
+
+.back-link {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.back-link a {
+    text-decoration: none;
+    color: #667eea;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>Edit Record</h2>
+
+<input type="text" id="email" readonly>
+<input type="text" id="fname" placeholder="First Name">
+<input type="text" id="lname" placeholder="Last Name">
+<textarea id="message" placeholder="Message"></textarea>
+
+<button onclick="updateRecord()">Update</button>
+
+<div class="back-link">
+    <a href="/dev/?action=view">Back to Records</a>
+</div>
+
+</div>
+
+<script>
+
+// Get email from URL
+const params = new URLSearchParams(window.location.search);
+const emailParam = params.get("email");
+
+if (!emailParam) {
+    alert("No email provided in URL");
+}
+
+// Load existing data
+fetch('/dev/?action=data')
+.then(res => res.json())
+.then(data => {
+
+    const record = data.find(item => item.email == emailParam);
+
+    if(record){
+        document.getElementById("email").value = record.email;
+        document.getElementById("fname").value = record.fname;
+        document.getElementById("lname").value = record.lname;
+        document.getElementById("message").value = record.message;
+    } else {
+        alert("Record not found");
+    }
+})
+.catch(error => {
+    console.error("Error loading data:", error);
+    alert("Failed to load record data");
+});
+
+// Update function
+function updateRecord(){
+
+    const email = document.getElementById("email").value;
+    const fname = document.getElementById("fname").value;
+    const lname = document.getElementById("lname").value;
+    const message = document.getElementById("message").value;
+
+    if(!fname || !lname || !message){
+        alert("All fields are required");
+        return;
+    }
+
+    fetch('/dev/',{
+        method:'PUT',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+            email: email,
+            fname: fname,
+            lname: lname,
+            message: message
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert("Record Updated Successfully");
+        window.location = "/dev/?action=view";
+    })
+    .catch(error => {
+        console.error("Update error:", error);
+        alert("Update failed");
+    });
+}
+
+</script>
+
+</body>
+</html>
