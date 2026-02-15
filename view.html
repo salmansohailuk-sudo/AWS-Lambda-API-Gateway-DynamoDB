@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>All Records</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    padding: 40px;
+}
+
+.container {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    text-align: left;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #667eea;
+    color: white;
+    padding: 12px;
+}
+
+td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+tr:hover {
+    background: #f4f4f4;
+}
+
+button {
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    margin: 2px;
+    transition: 0.3s;
+}
+
+.edit {
+    background: #28a745;
+    color: white;
+}
+
+.delete {
+    background: #dc3545;
+    color: white;
+}
+
+.edit:hover { background: #1e7e34; }
+.delete:hover { background: #c82333; }
+
+.back {
+    margin-top: 20px;
+    background: #333;
+    color: white;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>All Records</h2>
+
+<table id="table">
+<tr>
+<th>Email</th>
+<th>First</th>
+<th>Last</th>
+<th>Message</th>
+<th>Action</th>
+</tr>
+</table>
+
+<br>
+<button class="back" onclick="window.location='/dev/'">Back</button>
+
+</div>
+
+<script>
+
+fetch('/dev/?action=data')
+.then(res => res.json())
+.then(data => {
+    let table = document.getElementById("table");
+
+    data.forEach(item => {
+        let row = table.insertRow();
+        row.innerHTML = `
+            <td>${item.email}</td>
+            <td>${item.fname}</td>
+            <td>${item.lname}</td>
+            <td>${item.message}</td>
+            <td>
+                <button class="edit" onclick="editRecord('${item.email}')">Edit</button>
+                <button class="delete" onclick="deleteRecord('${item.email}')">Delete</button>
+            </td>
+        `;
+    });
+});
+
+function deleteRecord(email) {
+    if(!confirm("Delete this record?")) return;
+    fetch('/dev/', {
+        method:'DELETE',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({email:email})
+    }).then(()=>location.reload());
+}
+
+function editRecord(email){
+    window.location = `/dev/?action=edit&email=${email}`;
+}
+
+</script>
+
+</body>
+</html>
