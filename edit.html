@@ -84,7 +84,7 @@ button:hover {
 <button onclick="updateRecord()">Update</button>
 
 <div class="back-link">
-    <a href="/dev/?action=view">Back to Records</a>
+    <a href="/?action=view">Back to Records</a>
 </div>
 
 </div>
@@ -100,7 +100,7 @@ if (!emailParam) {
 }
 
 // Load existing data
-fetch('/dev/?action=data')
+fetch('/?action=data')
 .then(res => res.json())
 .then(data => {
 
@@ -133,7 +133,7 @@ function updateRecord(){
         return;
     }
 
-    fetch('/dev/',{
+    fetch('/',{
         method:'PUT',
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({
@@ -146,7 +146,7 @@ function updateRecord(){
     .then(res => res.json())
     .then(data => {
         alert("Record Updated Successfully");
-        window.location = "/dev/?action=view";
+        window.location = "/?action=view";
     })
     .catch(error => {
         console.error("Update error:", error);
