@@ -79,7 +79,10 @@ button {
 
 <div class="container">
 
-<h2>All Records</h2>
+<h2>CRUD Application</h2>
+<button class="back" onclick="window.location='/'">New Record</button>
+<br>
+<br>
 
 <table id="table">
 <tr>
@@ -92,13 +95,12 @@ button {
 </table>
 
 <br>
-<button class="back" onclick="window.location='/dev/'">Back</button>
 
 </div>
 
 <script>
 
-fetch('/dev/?action=data')
+fetch('/?action=data')
 .then(res => res.json())
 .then(data => {
     let table = document.getElementById("table");
@@ -120,7 +122,7 @@ fetch('/dev/?action=data')
 
 function deleteRecord(email) {
     if(!confirm("Delete this record?")) return;
-    fetch('/dev/', {
+    fetch('/', {
         method:'DELETE',
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({email:email})
@@ -128,7 +130,7 @@ function deleteRecord(email) {
 }
 
 function editRecord(email){
-    window.location = `/dev/?action=edit&email=${email}`;
+    window.location = `/?action=edit&email=${email}`;
 }
 
 </script>
