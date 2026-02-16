@@ -1,14 +1,17 @@
+#// use this file if you are wroking with sub domain api
+
 import json
 import boto3
 import urllib.parse
 import base64
 from decimal import Decimal
 
-# DynamoDB setup
+# ================= DYNAMODB SETUP =================
 dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table('devdb')
+table = dynamodb.Table('hannithechampion')
 
 
+# ================= LAMBDA HANDLER =================
 def lambda_handler(event, context):
     try:
         method = event.get("httpMethod")
@@ -24,46 +27,47 @@ def lambda_handler(event, context):
         # ================= GET =================
         if method == "GET":
 
+            # Fetch JSON data
             if query.get("action") == "data":
                 response_data = table.scan()
-                print("SCAN RESULT:", response_data)
                 return response(200, response_data.get("Items", []))
 
+            # View page
             if query.get("action") == "view":
                 return response(200, load_html("view.html"), "text/html")
 
+            # Edit page
             if query.get("action") == "edit":
                 return response(200, load_html("edit.html"), "text/html")
 
+            # Default root page
             return response(200, load_html("index.html"), "text/html")
 
         # ================= INSERT =================
         if method == "POST":
             data = parse_form_data(event)
 
-            email = data["email"].strip()
-
-            print("INSERTING:", email)
+            email = data.get("email")
+            if not email:
+                return response(400, {"error": "Email required"})
 
             table.put_item(
                 Item={
-                    "email": email,
-                    "1": Decimal(1),  # SORT KEY
+                    "email": email.strip(),
+                    "1": Decimal(1),
                     "fname": data.get("fname", ""),
                     "lname": data.get("lname", ""),
                     "message": data.get("message", "")
                 }
             )
 
-            return response(200, load_html("success.html"), "text/html")
+            return response(200, load_html("view.html"), "text/html")
 
         # ================= DELETE =================
         if method == "DELETE":
             body = json.loads(event.get("body") or "{}")
 
             email = body.get("email", "").strip()
-
-            print("DELETING:", email)
 
             table.delete_item(
                 Key={
@@ -79,26 +83,7 @@ def lambda_handler(event, context):
             body = json.loads(event.get("body") or "{}")
 
             email = body.get("email", "").strip()
-            fname = body.get("fname", "")
-            lname = body.get("lname", "")
-            message = body.get("message", "")
 
-            print("UPDATING:", email)
-
-            # First confirm item exists
-            existing = table.get_item(
-                Key={
-                    "email": email,
-                    "1": Decimal(1)
-                }
-            )
-
-            print("EXISTING ITEM:", existing)
-
-            if "Item" not in existing:
-                return response(400, {"error": "Item not found in DB"})
-
-            # Now update
             table.update_item(
                 Key={
                     "email": email,
@@ -106,13 +91,11 @@ def lambda_handler(event, context):
                 },
                 UpdateExpression="SET fname = :f, lname = :l, message = :m",
                 ExpressionAttributeValues={
-                    ":f": fname,
-                    ":l": lname,
-                    ":m": message
+                    ":f": body.get("fname", ""),
+                    ":l": body.get("lname", ""),
+                    ":m": body.get("message", "")
                 }
             )
-
-            print("UPDATE SUCCESS")
 
             return response(200, {"message": "Updated Successfully"})
 
@@ -126,7 +109,7 @@ def lambda_handler(event, context):
 # ================= UTILITIES =================
 
 def parse_form_data(event):
-    body = event.get("body")
+    body = event.get("body") or ""
 
     if event.get("isBase64Encoded"):
         body = base64.b64decode(body).decode("utf-8")
